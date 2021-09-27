@@ -13,10 +13,6 @@ from pathlib import Path
 * Contact devios.honore@gmail.com
 *
 *
-* Created by PolestarMacPro on 21/09/2021
-* Copyright © 2021 PoleStar. All rights reserved.
-*
-*
 """
 __version__ = "2021-09-24"
 RESOURCE_DIR="resources"
@@ -26,7 +22,7 @@ from ble.advertiser import BleAdvertiser
 
 
 """
- Example: ./main.py -u 504f4c45-5354-4152-4d4f-422d31343433 -j 2341 -n 1245 -p /dev/tty.usbmodem11 -d 45 -t 360
+ Example: ./main.py -u 504f4c45-5354-4152-4d4f-422d31343433 -j 2341 -n 1245 -p /dev/ttyUSB0 -d 45 -t 360
 """
 
 def mkdir(dirpath):
@@ -100,10 +96,9 @@ def main():
 
     # Create the ble advertiser task
     advertiser_task = BleAdvertiser(ser, params)
-    # doTask(bletask)
 
     schedule.every(params.period).seconds.do(doTask, bletask=advertiser_task)
-
+    doTask(advertiser_task) # Run now
     while True:
         schedule.run_pending()
         time.sleep(1)
